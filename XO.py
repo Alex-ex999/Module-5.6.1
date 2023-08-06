@@ -23,11 +23,6 @@ def print_maps():
     print(maps[6], end = " ")
     print(maps[7], end = " ")
     print(maps[8])
-
-def step_maps(step, symbol):
-    ind = maps.index(step)
-    maps[ind] = symbol
-
 def get_result():
     win = ""
 
@@ -38,6 +33,22 @@ def get_result():
             win = "O"
 
     return win
+def ask_step():
+    while True:
+        step = input()  #получили ввод
+        if not step.isdigit():  # проверили, число ли
+            print('Введите цифру: ')
+            continue
+        step = int(step)
+        if step < 1 or step > 9:  # проверили, в пределах ли поля
+            print("Что-то пошло не так! Введите корректное значение: ")
+            continue
+        step -= 1
+        if maps[step] == "X" or maps[step] == "O":  # проверили не занята ли клетка
+            print("Выберите другой вариант хода: ")
+            continue
+        return step
+
 
 game_over = False
 player1 = True
@@ -46,21 +57,25 @@ while game_over == False:
 
     print_maps()
 
-    if player1 == True:
-        symbol = "X"
-        step = int(input("Игрок 1, введите цифру: "))
+    if player1:
+        symbol = 'X'
     else:
-        symbol = "O"
-        step = int(input("Игрок 2, введите цифру: "))
+        symbol = '0'
 
-    step_maps(step, symbol)
+    print(f'Игрок {symbol}, введите цифру:')
+    step = ask_step()
+
+
+    maps[step] = symbol
     win = get_result()
     if win != "":
         game_over = True
     else:
         game_over = False
 
+
     player1 = not (player1)
+
 
 print_maps()
 print("Победа", win)
